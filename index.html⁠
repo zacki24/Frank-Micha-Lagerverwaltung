@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lagerverwaltung</title>
+    <!-- Tailwind CSS, Lucide Icons & Chart.js -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .sidebar-item-active { background-color: #007AFF; color: white; }
+    </style>
+</head>
+<body class="bg-[#F2F2F7] text-gray-800 antialiased selection:bg-blue-500 selection:text-white">
+
+    <div class="flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR (Für iPad Pro & Mac) -->
+        <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col justify-between p-4 flex-shrink-0">
+            <div>
+                <div class="flex items-center gap-3 px-2 py-3 mb-6">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                        <i data-lucide="box" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl leading-tight">Lagerverwaltung</h1>
+                        <p class="text-xs text-gray-500">Deine Materialien. Immer im Blick.</p>
+                    </div>
+                </div>
+
+                <nav class="space-y-1">
+                    <a href="#" class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition">
+                        <i data-lucide="home" class="w-5 h-5"></i> Dashboard
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i data-lucide="package" class="w-5 h-5"></i> Lager
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i data-lucide="paint-brush" class="w-5 h-5"></i> Farben & Airbrush
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i data-lucide="scan-line" class="w-5 h-5"></i> Scanner
+                    </a>
+                    <a href="#" class="flex items-center justify-between px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="clipboard-check" class="w-5 h-5"></i> Bestand prüfen
+                        </div>
+                        <span class="bg-amber-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+                    </a>
+                    <a href="#" class="flex items-center justify-between px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="shopping-cart" class="w-5 h-5"></i> Einkaufsliste
+                        </div>
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">4</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i data-lucide="image" class="w-5 h-5"></i> Verkaufs-Galerie
+                    </a>
+                    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-100 transition">
+                        <i data-lucide="settings" class="w-5 h-5"></i> Rechte & User
+                    </a>
+                </nav>
+            </div>
+
+            <div class="bg-blue-50/50 p-4 rounded-2xl border border-blue-100">
+                <p class="text-xs italic text-blue-900 mb-2">„Ordnung schafft Freiraum für neue Projekte.“</p>
+                <p class="text-[10px] text-gray-400 font-medium">Version 1.0.0</p>
+            </div>
+        </aside>
+
+        <!-- HAUPTINHALT -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 pb-24 md:pb-8">
+            
+            <!-- Header -->
+            <header class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Lagerverwaltung</h2>
+                    <p class="text-gray-500 text-sm">Deine Materialien. Immer im Blick.</p>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <div class="relative flex-1 md:w-80">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Artikel, Hersteller, Farbe, EAN ..." class="w-full pl-9 pr-10 py-2 bg-white rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm">
+                        <i data-lucide="scan-line" class="w-4 h-4 absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 cursor-pointer hover:text-blue-600"></i>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white p-1.5 pr-4 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-xs">FP</div>
+                        <div class="hidden sm:block text-xs">
+                            <p class="text-gray-400">Guten Morgen</p>
+                            <p class="font-bold text-gray-800">Frank Prokop</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- KATEGORIEN -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Card 1: Filamente -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="h-28 bg-gradient-to-r from-emerald-500 to-teal-700 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1615840287214-7ff58936c4cf?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Filamente">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="p-2 bg-emerald-100 text-emerald-700 rounded-lg"><i data-lucide="disc" class="w-5 h-5"></i></span>
+                                <h3 class="font-bold text-lg">Filamente</h3>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">42 Farben · 68 Bestände · 8 Typen</p>
+                        <div class="flex items-center justify-between text-xs font-semibold">
+                            <span class="text-gray-600">128.4 kg</span>
+                            <span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full border border-red-100 flex items-center gap-1">
+                                <i data-lucide="alert-triangle" class="w-3 h-3"></i> 3 nachbestellen
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Airbrush & Revell Farben -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="h-28 bg-gradient-to-r from-amber-500 to-orange-600 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Airbrush">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="p-2 bg-amber-100 text-amber-700 rounded-lg"><i data-lucide="paint-brush" class="w-5 h-5"></i></span>
+                                <h3 class="font-bold text-lg">Airbrush & Revell</h3>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">73 Farben · Vallejo & Revell Aqua</p>
+                        <div class="flex items-center justify-between text-xs font-semibold">
+                            <span class="text-gray-600">1.8 Liter</span>
+                            <span class="bg-amber-50 text-amber-600 px-2.5 py-1 rounded-full border border-amber-100 flex items-center gap-1">
+                                <i data-lucide="alert-circle" class="w-3 h-3"></i> 2 zu prüfen
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Modellbau -->
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-200/80 shadow-sm hover:shadow-md transition">
+                    <div class="h-28 bg-gradient-to-r from-blue-600 to-indigo-800 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover opacity-80" alt="Modellbau">
+                    </div>
+                    <div class="p-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="p-2 bg-blue-100 text-blue-700 rounded-lg"><i data-lucide="train" class="w-5 h-5"></i></span>
+                                <h3 class="font-bold text-lg">Modellbau</h3>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-3">Verbaut · Zubehör · Gleise</p>
+                        <div class="flex items-center justify-between text-xs font-semibold">
+                            <span class="text-gray-600">2'341 Stück</span>
+                            <span class="bg-red-50 text-red-600 px-2.5 py-1 rounded-full border border-red-100 flex items-center gap-1">
+                                <i data-lucide="alert-triangle" class="w-3 h-3"></i> 4 nachbestellen
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SCHNELLAKTIONEN & PRÜFBEREICH GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                
+                <!-- Bestand im Regal überprüfen (2-Stufen-System) -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-base text-amber-600 flex items-center gap-2">
+                            <i data-lucide="clipboard-check" class="w-5 h-5"></i> Bestand im Regal überprüfen
+                        </h3>
+                        <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md font-medium">Vor Einkaufsliste</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-gray-400 border-b border-gray-100">
+                                <tr>
+                                    <th class="pb-2">Artikel</th>
+                                    <th class="pb-2">Status</th>
+                                    <th class="pb-2 text-right">Aktion</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50">
+                                <tr>
+                                    <td class="py-2.5 font-bold">Reinigungsmittel 0,7l</td>
+                                    <td><span class="text-amber-600 bg-amber-50 px-2 py-0.5 rounded">In Gebrauch (1)</span></td>
+                                    <td class="text-right space-x-1">
+                                        <button onclick="alert('Bestand im Regal als OK bestätigt')" class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-lg font-bold hover:bg-gray-200">Regal OK</button>
+                                        <button onclick="alert('Auf Einkaufsliste gesetzt!')" class="bg-red-50 text-red-600 px-2.5 py-1 rounded-lg font-bold border border-red-100 hover:bg-red-100">Kaufen</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2.5 font-bold">Revell Aqua Feuerrot</td>
+                                    <td><span class="text-red-500 bg-red-50 px-2 py-0.5 rounded">Angefangen (0 OVP)</span></td>
+                                    <td class="text-right space-x-1">
+                                        <button onclick="alert('Bestand im Regal als OK bestätigt')" class="bg-gray-100 text-gray-600 px-2.5 py-1 rounded-lg font-bold hover:bg-gray-200">Regal OK</button>
+                                        <button onclick="alert('Auf Einkaufsliste gesetzt!')" class="bg-red-50 text-red-600 px-2.5 py-1 rounded-lg font-bold border border-red-100 hover:bg-red-100">Kaufen</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Schnellaktionen -->
+                <div class="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm">
+                    <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-amber-500"></i> Schnellaktionen
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="alert('Kamera-Scanner gestartet')" class="flex items-center gap-3 p-3 bg-emerald-50 text-emerald-800 rounded-xl font-bold border border-emerald-100 hover:bg-emerald-100 transition">
+                            <i data-lucide="barcode" class="w-6 h-6 text-emerald-600"></i>
+                            <div class="text-left"><p class="text-xs">EAN scannen</p><p class="text-[10px] font-normal text-emerald-600">Auto-Datenbank</p></div>
+                        </button>
+
+                        <button onclick="alert('3D-Druck / Teil für Verkaufs-Galerie anlegen')" class="flex items-center gap-3 p-3 bg-purple-50 text-purple-800 rounded-xl font-bold border border-purple-100 hover:bg-purple-100 transition">
+                            <i data-lucide="camera" class="w-6 h-6 text-purple-600"></i>
+                            <div class="text-left"><p class="text-xs">3D-Druck / Foto</p><p class="text-[10px] font-normal text-purple-600">Für Verkaufs-Galerie</p></div>
+                        </button>
+
+                        <button onclick="alert('Neuen Artikel anlegen')" class="flex items-center gap-3 p-3 bg-blue-50 text-blue-800 rounded-xl font-bold border border-blue-100 hover:bg-blue-100 transition">
+                            <i data-lucide="plus-circle" class="w-6 h-6 text-blue-600"></i>
+                            <div class="text-left"><p class="text-xs">Neuen Artikel</p><p class="text-[10px] font-normal text-blue-600">Manuell anlegen</p></div>
+                        </button>
+
+                        <button onclick="alert('Einkaufsliste mit Micha teilen')" class="flex items-center gap-3 p-3 bg-amber-50 text-amber-800 rounded-xl font-bold border border-amber-100 hover:bg-amber-100 transition">
+                            <i data-lucide="share-2" class="w-6 h-6 text-amber-600"></i>
+                            <div class="text-left"><p class="text-xs">Liste teilen</p><p class="text-[10px] font-normal text-amber-600">WhatsApp / Mail</p></div>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <!-- BOTTOM NAVIGATION (Mobil auf dem iPhone) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 px-1 z-50">
+        <a href="#" class="flex flex-col items-center text-blue-600 font-medium text-[10px]">
+            <i data-lucide="home" class="w-5 h-5"></i> Dashboard
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-500 font-medium text-[10px]">
+            <i data-lucide="scan-line" class="w-5 h-5"></i> Scanner
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-500 font-medium text-[10px]">
+            <i data-lucide="list-checks" class="w-5 h-5"></i> Einkaufen
+        </a>
+        <a href="#" class="flex flex-col items-center text-gray-500 font-medium text-[10px]">
+            <i data-lucide="image" class="w-5 h-5"></i> Galerie
+        </a>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
